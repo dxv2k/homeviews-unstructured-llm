@@ -1,3 +1,5 @@
+CSV_STORAGE_FOLDER: str = "./CSVStorage"
+
 OPENAI_EMBEDDINGS_FOLDER_PATH: str = "./OpenAIEmbeddings"
 
-SAVE_DIR: str = "./uploads/"
+UPLOAD_FOLDER: str = "./uploads/"

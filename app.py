@@ -1,6 +1,14 @@
+import dotenv
+from os import getenv
+
 from src.utils.logger import get_logger
 from src.utils.prepare_project import prepare_project_dir
 from src.webui.web import web
+
+
+
+dotenv.load_dotenv()
+assert getenv("OPENAI_API_KEY") is not None, "OPENAI_API_KEY not set in .env"
 
 
 
@@ -43,8 +51,8 @@ if __name__ == "__main__":
 
     logger.info(f"Starting server with config: {args}")
 
-    block = web()
-    block.queue(concurrency_count=n_concurrency).launch(
+    app = web()
+    app.queue(concurrency_count=n_concurrency).launch(
         auth=(username, password),
         debug=debug,
         server_port=server_port,

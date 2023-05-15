@@ -1,7 +1,7 @@
 import gradio as gr
 
-from src.webui.features.CSVDataViewer.viewer import csv_viewer 
-from src.webui.features.FromUnstructuredCSV.unstructured import unstructured
+from src.webui.features.CSVDataViewer.ui import csv_viewer 
+from src.webui.features.FromUnstructuredCSV.ui import unstructured
 
 
 def web() -> gr.Blocks: 
