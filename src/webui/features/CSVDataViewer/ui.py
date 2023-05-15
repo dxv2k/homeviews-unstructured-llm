@@ -8,7 +8,7 @@ from src.webui.ContextProvider.SimpleContext import LIST_CSV_IN_DB
 
 logger = get_logger()
 
-# TODO: add handler
+
 def graph_refresh_collection_list_handler() -> gr.Dropdown:
     global LIST_CSV_IN_DB  # NOTE: dirty way to do similar to gr.State()
     LIST_CSV_IN_DB = os.listdir(UPLOAD_FOLDER)
@@ -19,7 +19,7 @@ def graph_refresh_collection_list_handler() -> gr.Dropdown:
 def change_csv_handler(csv_filepath: str) -> gr.Dataframe: 
     df = pd.read_csv(csv_filepath,sep="\t")
     logger.info(f"Change to dataframe {csv_filepath}")
-    return gr.Dataframe.update(value = df) 
+    return gr.Dataframe.update(value = df), gr.File.update(value=csv_filepath) 
 
 
 def csv_viewer() -> gr.Blocks: 
@@ -28,6 +28,8 @@ def csv_viewer() -> gr.Blocks:
     block = gr.Blocks() 
     with block: 
         with gr.Row(): 
+            file = gr.File(label="Output CSV Download")
+        with gr.Row(): 
             csv_dropdown = gr.Dropdown(
                 choices=LIST_CSV_IN_DB, 
                 label="Select CSV to view", 
@@ -35,7 +37,6 @@ def csv_viewer() -> gr.Blocks:
                                         else None # TODO: pass csv list files here
             )
             csv_refresh_btn = gr.Button("⟳ Refresh Collections").style(full_width=False)  
-            download_btn = gr.Button("Download CSV").style(full_width=False)   
 
 
         df_viewer = gr.Dataframe(None, label="Default pricing list table (for comparision)")
@@ -48,7 +49,7 @@ def csv_viewer() -> gr.Blocks:
 
         csv_dropdown.change(change_csv_handler, 
             inputs=csv_dropdown, 
-            outputs=df_viewer
+            outputs=[df_viewer,file]
         ) 
 
 
