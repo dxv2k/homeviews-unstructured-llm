@@ -3,7 +3,6 @@ from os import getenv
 
 from src.utils.logger import get_logger
 from src.utils.prepare_project import prepare_project_dir
-from src.webui.web import web
 
 
 
@@ -46,11 +45,13 @@ if __name__ == "__main__":
     server_port = args.port
     is_show_api = args.show_api
 
+
     logger = get_logger()
     prepare_project_dir(logger=logger)
 
     logger.info(f"Starting server with config: {args}")
 
+    from src.webui.web import web
     app = web()
     app.queue(concurrency_count=n_concurrency).launch(
         auth=(username, password),

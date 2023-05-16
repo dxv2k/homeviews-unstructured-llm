@@ -9,7 +9,7 @@ from src.webui.ContextProvider.SimpleContext import LIST_CSV_IN_DB
 logger = get_logger()
 
 
-def graph_refresh_collection_list_handler() -> gr.Dropdown:
+def refresh_btn_handler() -> gr.Dropdown:
     global LIST_CSV_IN_DB  # NOTE: dirty way to do similar to gr.State()
     LIST_CSV_IN_DB = os.listdir(UPLOAD_FOLDER)
     logger.info(f"Refresh list csv {LIST_CSV_IN_DB}")
@@ -43,7 +43,7 @@ def csv_viewer() -> gr.Blocks:
 
         # NOTE: event handler
         csv_refresh_btn.click(
-            fn=graph_refresh_collection_list_handler, 
+            fn=refresh_btn_handler, 
             outputs=csv_dropdown
         )
 
