@@ -1,7 +1,7 @@
 import os 
 import gradio as gr 
 import pandas as pd 
-from src.constants import UPLOAD_FOLDER
+from src.constants import CSV_STORAGE_FOLDER, UPLOAD_FOLDER
 from src.utils.logger import get_logger 
 from src.webui.ContextProvider.SimpleContext import LIST_CSV_IN_DB 
 
@@ -11,7 +11,10 @@ logger = get_logger()
 
 def refresh_btn_handler() -> gr.Dropdown:
     global LIST_CSV_IN_DB  # NOTE: dirty way to do similar to gr.State()
-    LIST_CSV_IN_DB = os.listdir(UPLOAD_FOLDER)
+    LIST_CSV_IN_DB = [ 
+        os.path.join(CSV_STORAGE_FOLDER,path)
+        for path in os.listdir(UPLOAD_FOLDER)
+    ]
     logger.info(f"Refresh list csv {LIST_CSV_IN_DB}")
     return gr.Dropdown.update(choices=LIST_CSV_IN_DB)
 
@@ -34,7 +37,7 @@ def csv_viewer() -> gr.Blocks:
                 choices=LIST_CSV_IN_DB, 
                 label="Select CSV to view", 
                 value=LIST_CSV_IN_DB[0] if LIST_CSV_IN_DB \
-                                        else None # TODO: pass csv list files here
+                                        else None 
             )
             csv_refresh_btn = gr.Button("⟳ Refresh Collections").style(full_width=False)  
 
